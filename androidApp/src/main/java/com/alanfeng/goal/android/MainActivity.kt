@@ -1,4 +1,4 @@
-package com.alanfeng.task.android
+package com.alanfeng.goal.android
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -65,7 +65,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting(Greeting().greeting())
                 }
             }
         }
