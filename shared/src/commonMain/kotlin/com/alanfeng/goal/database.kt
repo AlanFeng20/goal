@@ -14,7 +14,6 @@ expect class DatabaseDriverFactory {
 fun createDatabase(driverFactory:DatabaseDriverFactory): AppDatabase {
     val driver = driverFactory.createDriver()
     return AppDatabase(driver)
-
     // Do more work with the database (see below).
 }
 

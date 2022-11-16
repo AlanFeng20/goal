@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    id("org.jetbrains.compose")
 
 
     kotlin("plugin.serialization") version "1.7.21"
@@ -46,6 +47,12 @@ kotlin {
                 implementation("com.squareup.okio:okio:$okioVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.ctrip.flight.mmkv:mmkv-kotlin:1.2.4")
+
+
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material)
+
 //                implementation(libs.napier)
             }
         }
