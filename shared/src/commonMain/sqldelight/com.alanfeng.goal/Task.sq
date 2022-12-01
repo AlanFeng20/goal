@@ -1,0 +1,11 @@
+CREATE TABLE Task (
+    id Integer  NOT NULL  PRIMARY KEY ,
+    goal_id INTEGER NOT NULL ,
+    name Text  NOT NULL ,
+    remind_way Integer,
+    remind_time Text,
+    created_at Integer AS Long NOT NULL,
+    flag_del Integer AS Boolean NOT NULL DEFAULT 0,
+    enable Integer AS Boolean  NOT NULL DEFAULT 1,
+    FOREIGN KEY (goal_id) REFERENCES Goal(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
