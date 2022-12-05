@@ -1,0 +1,14 @@
+CREATE TABLE TaskRemindTime (
+    id Integer  PRIMARY KEY AUTOINCREMENT,
+    task_id INTEGER NOT NULL ,
+    hour INTEGER NOT NULL ,
+    minute INTEGER NOT NULL ,
+    hasSun INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    hasMon INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    hasTues INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    hasWed INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    hasThur INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    hasFri INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    hasSat INTEGER AS Boolean DEFAULT 0 NOT NULL ,
+    FOREIGN KEY (task_id) REFERENCES Task(id) ON DELETE CASCADE ON UPDATE CASCADE
+);

@@ -1,11 +1,11 @@
 CREATE TABLE TaskResult (
-    id INTEGER  NOT NULL  PRIMARY KEY AUTOINCREMENT ,
+    id INTEGER  PRIMARY KEY AUTOINCREMENT,
     task_id INTEGER NOT NULL ,
     is_success INTEGER  NOT NULL,
     success_mark TEXT,
     emotion Text,
-    fail_hardness Integer NOT NULL,
-    fail_mark Text NOT NULL  ,
+    fail_hardness Integer,
+    fail_mark Text,
     created_at Integer AS Long NOT NULL,
     FOREIGN KEY (task_id) REFERENCES Task(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

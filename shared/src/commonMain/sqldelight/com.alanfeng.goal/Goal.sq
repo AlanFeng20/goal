@@ -1,5 +1,5 @@
 CREATE TABLE Goal (
-    id Integer  NOT NULL  PRIMARY KEY ,
+    id Integer  PRIMARY KEY AUTOINCREMENT ,
     parent_id INTEGER DEFAULT NULL ,
     name Text  NOT NULL ,
     created_at Integer AS Long NOT NULL,
