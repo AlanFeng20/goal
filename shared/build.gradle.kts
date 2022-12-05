@@ -30,7 +30,7 @@ kotlin {
 
         val coroutinesVersion = "1.6.4"
         val ktorVersion = "2.1.2"
-        val sqlDelightVersion = "1.5.3"
+        val sqlDelightVersion = "1.5.4"
         val dateTimeVersion = "0.4.0"
         val okioVersion = "3.2.0"
         val commonMain by getting{

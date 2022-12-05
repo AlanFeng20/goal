@@ -1,0 +1,31 @@
+
+CREATE TABLE TaskEntity (
+    id Integer  PRIMARY KEY AUTOINCREMENT,
+    goal_id INTEGER NOT NULL ,
+    name Text  NOT NULL ,
+    remind_way TEXT,
+    created_at Integer AS Long NOT NULL,
+    flag_del Integer AS Boolean NOT NULL DEFAULT 0,
+    enable Integer AS Boolean  NOT NULL DEFAULT 1,
+    finish_mark TEXT DEFAULT NULL ,
+    FOREIGN KEY (goal_id) REFERENCES GoalEntity(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+insertTask:
+INSERT INTO TaskEntity ( goal_id, name, remind_way, created_at, flag_del, enable, finish_mark) VALUES ( ?, ?, ?, ?, ?, ?, ?);
+
+update:
+INSERT OR REPLACE INTO TaskEntity (id, goal_id, name, remind_way, created_at, flag_del, enable, finish_mark) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM TaskEntity;
+
+selectAllByGoalId:
+SELECT * FROM TaskEntity WHERE goal_id=?;
+
+selectAvaiable:
+SELECT * FROM TaskEntity WHERE flag_del = 0;
+
+selectAvaiableByGoalId:
+SELECT * FROM TaskEntity WHERE flag_del = 0 AND goal_id=?;
+
+

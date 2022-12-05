@@ -1,0 +1,29 @@
+
+CREATE TABLE GoalEntity (
+    id Integer  PRIMARY KEY AUTOINCREMENT ,
+    parent_id INTEGER DEFAULT NULL ,
+    name Text  NOT NULL ,
+    created_at Integer AS Long NOT NULL,
+    flag_del Integer AS Boolean NOT NULL DEFAULT 0,
+    enable Integer AS Boolean  NOT NULL DEFAULT 1
+);
+
+insertGoal:
+INSERT  INTO  GoalEntity ( parent_id, name, created_at, flag_del, enable) VALUES (?, ?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM GoalEntity;
+
+selectAvaible:
+SELECT * FROM GoalEntity WHERE flag_del = 0;
+
+update:
+INSERT INTO GoalEntity (id, parent_id, name, created_at, flag_del, enable) VALUES (?, ?, ?, ?, ?, ?);
+
+updateByEntity:
+INSERT INTO GoalEntity (id, parent_id, name, created_at, flag_del, enable) VALUES ?;
+
+
+
+
+

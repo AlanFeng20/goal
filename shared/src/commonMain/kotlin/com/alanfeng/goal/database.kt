@@ -7,11 +7,15 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 // in src/commonMain/kotlin
-expect class DatabaseDriverFactory {
+expect class DatabaseDriverFactory() {
     fun createDriver(): SqlDriver
 }
 
-fun createDatabase(driverFactory:DatabaseDriverFactory): AppDatabase {
+val database by lazy {
+    createDatabase(DatabaseDriverFactory())
+}
+
+private fun createDatabase(driverFactory: DatabaseDriverFactory): AppDatabase {
     val driver = driverFactory.createDriver()
     return AppDatabase(driver)
     // Do more work with the database (see below).
