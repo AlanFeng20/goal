@@ -20,8 +20,6 @@ SELECT * FROM GoalEntity WHERE flag_del = 0;
 update:
 INSERT INTO GoalEntity (id, parent_id, name, created_at, flag_del, enable) VALUES (?, ?, ?, ?, ?, ?);
 
-updateByEntity:
-INSERT INTO GoalEntity (id, parent_id, name, created_at, flag_del, enable) VALUES ?;
 
 
 

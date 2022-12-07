@@ -1,8 +1,8 @@
 CREATE TABLE TaskRemindTimeEntity (
     id Integer  PRIMARY KEY AUTOINCREMENT,
     task_id INTEGER NOT NULL ,
-    hour INTEGER NOT NULL ,
-    minute INTEGER NOT NULL ,
+    hour INTEGER AS Int NOT NULL ,
+    minute INTEGER AS Int NOT NULL ,
     hasSun INTEGER AS Boolean DEFAULT 0 NOT NULL ,
     hasMon INTEGER AS Boolean DEFAULT 0 NOT NULL ,
     hasTues INTEGER AS Boolean DEFAULT 0 NOT NULL ,
@@ -14,7 +14,7 @@ CREATE TABLE TaskRemindTimeEntity (
 );
 
 insertTaskRemindTime:
-INSERT INTO TaskRemindTimeEntity ( task_id, hour, minute, hasSun, hasMon, hasTues, hasWed, hasThur, hasFri, hasSat) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO TaskRemindTimeEntity ( task_id, hour, minute, hasSun, hasMon, hasTues, hasWed, hasThur, hasFri, hasSat) VALUES ?;
 
 selectByTaskId:
 SELECT * FROM TaskRemindTimeEntity WHERE task_id = ?;

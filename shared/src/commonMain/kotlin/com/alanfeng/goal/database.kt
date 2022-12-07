@@ -29,3 +29,5 @@ private inline fun <reified T : Any> jsonAdapter() =
 
         override fun encode(value: T) = Json.encodeToString(value)
     }
+
+const val SqlIdPlaceholder=0L
