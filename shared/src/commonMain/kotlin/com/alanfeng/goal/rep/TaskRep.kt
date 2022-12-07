@@ -11,7 +11,7 @@ import kotlinx.datetime.DayOfWeek
 
 object TaskRep {
     suspend fun list(goalId: Long) = withContext(dispatcherIO) {
-        database.transactionWithResult{
+        database.transactionWithResult {
             database.taskQueries.selectAvaiableByGoalId(goalId).executeAsList()
                 .map { taskEntity ->
                     val remindTime =
@@ -26,7 +26,11 @@ object TaskRep {
                                     DayOfWeek.FRIDAY to remindTimeEntity.hasFri,
                                     DayOfWeek.SATURDAY to remindTimeEntity.hasSat,
                                 ).filter { it.value }.keys
-                                RemindTime(remindTimeEntity.hour, remindTimeEntity.minute, remindWeeks)
+                                RemindTime(
+                                    remindTimeEntity.hour,
+                                    remindTimeEntity.minute,
+                                    remindWeeks
+                                )
                             }
                     Task(
                         id = taskEntity.id,
@@ -85,8 +89,12 @@ object TaskRep {
         }
     }
 
-    suspend fun listTask()= withContext(dispatcherIO){
+    suspend fun listResult(id: Long) = withContext(dispatcherIO) {
+        database.taskResultQueries.selectByTaskId(id)
+    }
 
+    suspend fun listResultIn(id: Long, min: Long, max: Long) = withContext(dispatcherIO) {
+        database.taskResultQueries.selectPeriodByTaskId(id, min, max)
     }
 
     private fun RemindTime.toEntity(taskId: Long) = TaskRemindTimeEntity(

@@ -14,14 +14,14 @@ insertTaskResult:
 INSERT INTO TaskResultEntity (task_id, is_success, success_mark, emotion, fail_hardness, fail_mark, created_at) VALUES (?, ?, ?, ?, ?, ?, ?);
 
 selectByTaskId:
-SELECT * FROM TaskResultEntity WHERE task_id = ?;
+SELECT * FROM TaskResultEntity WHERE task_id = ? ORDER BY created_at DESC ;
 
 selectAll:
-SELECT * FROM TaskResultEntity;
+SELECT * FROM TaskResultEntity ORDER BY created_at DESC ;
 
 selectPeriod:
-SELECT * FROM TaskResultEntity WHERE created_at >:min AND created_at<:max;
+SELECT * FROM TaskResultEntity WHERE created_at >:min AND created_at<:max ORDER BY created_at DESC ;
 
 selectPeriodByTaskId:
-SELECT * FROM TaskResultEntity WHERE task_id=:task_id AND created_at >:min AND created_at<:max;
+SELECT * FROM TaskResultEntity WHERE task_id=:task_id AND created_at >:min AND created_at<:max ORDER BY created_at DESC ;
 

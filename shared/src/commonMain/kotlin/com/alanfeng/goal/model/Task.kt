@@ -1,10 +1,10 @@
 package com.alanfeng.goal.model
 
+import com.alanfeng.goal.SqlIdPlaceholder
 import kotlinx.datetime.DayOfWeek
 
 @kotlinx.serialization.Serializable
 data class Task(
-    val id: Long,
     var goal_id: Long,
     var name: String,
     var remind_way: String?,
@@ -12,7 +12,8 @@ data class Task(
     val created_at: Long,
     var flag_del: Boolean,
     var enable: Boolean,
-    var finish_mark: String?
+    var finish_mark: String?,
+    val id: Long= SqlIdPlaceholder,
 )
 
 @kotlinx.serialization.Serializable
@@ -23,12 +24,12 @@ data class RemindTime(
 )
 
 data class TaskResult(
-    val id: Long,
     val task_id: Long,
     val is_success: Long,
     val success_mark: String?,
     val emotion: String?,
     val fail_hardness: Long?,
     val fail_mark: String?,
-    val created_at: Long
+    val created_at: Long,
+    val id: Long= SqlIdPlaceholder,
 )
