@@ -2,16 +2,13 @@ CREATE TABLE TaskResultEntity (
     id INTEGER  PRIMARY KEY AUTOINCREMENT,
     task_id INTEGER NOT NULL ,
     is_success INTEGER  NOT NULL,
-    success_mark TEXT,
-    emotion Text,
-    fail_hardness Integer,
-    fail_mark Text,
+    emotion_percent INTEGER NOT NULL DEFAULT 0,
+    mark Text,
     created_at Integer NOT NULL,
     FOREIGN KEY (task_id) REFERENCES TaskEntity(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-insertTaskResult:
-INSERT INTO TaskResultEntity (task_id, is_success, success_mark, emotion, fail_hardness, fail_mark, created_at) VALUES (?, ?, ?, ?, ?, ?, ?);
+insertTaskResultEntity:
+INSERT INTO TaskResultEntity (id, task_id, is_success, emotion_percent, mark, created_at) VALUES (?, ?, ?, ?, ?, ?);
 
 selectByTaskId:
 SELECT * FROM TaskResultEntity WHERE task_id = ? ORDER BY created_at DESC ;

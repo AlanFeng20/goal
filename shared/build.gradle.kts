@@ -34,10 +34,11 @@ kotlin {
         val dateTimeVersion = "0.4.0"
         val okioVersion = "3.2.0"
         val commonMain by getting{
-
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             dependencies{
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
@@ -51,7 +52,7 @@ kotlin {
 
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
+                api(compose.material3)
 
 //                implementation(libs.napier)
             }
@@ -66,6 +67,7 @@ kotlin {
             dependencies{
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
+
             }
         }
         val androidTest by getting

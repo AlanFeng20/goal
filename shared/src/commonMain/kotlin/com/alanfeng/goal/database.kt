@@ -2,6 +2,7 @@ package com.alanfeng.goal
 
 import com.squareup.sqldelight.ColumnAdapter
 import com.squareup.sqldelight.db.SqlDriver
+import kotlinx.datetime.DayOfWeek
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -17,7 +18,7 @@ val database by lazy {
 
 private fun createDatabase(driverFactory: DatabaseDriverFactory): AppDatabase {
     val driver = driverFactory.createDriver()
-    return AppDatabase(driver)
+    return AppDatabase(driver, GoalEntity.Adapter(jsonAdapter()) , TaskEntity.Adapter(weekAdapter()) )
     // Do more work with the database (see below).
 }
 
@@ -29,5 +30,11 @@ private inline fun <reified T : Any> jsonAdapter() =
 
         override fun encode(value: T) = Json.encodeToString(value)
     }
+private inline fun  weekAdapter() =
+    object :
+        ColumnAdapter<List<DayOfWeek>, String> {
+        override fun decode(databaseValue: String):List<DayOfWeek> =
+            databaseValue.split(",").map { DayOfWeek.valueOf(it) }
 
-const val SqlIdPlaceholder=0L
+        override fun encode(value: List<DayOfWeek>) = value.joinToString(",") { it.name }
+    }

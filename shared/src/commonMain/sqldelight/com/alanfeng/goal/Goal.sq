@@ -1,25 +1,24 @@
-
+import kotlin.collections.List;
 CREATE TABLE GoalEntity (
     id Integer  PRIMARY KEY AUTOINCREMENT ,
-    parent_id INTEGER DEFAULT NULL ,
     name Text  NOT NULL ,
     created_at Integer AS Long NOT NULL,
-    flag_del Integer AS Boolean NOT NULL DEFAULT 0,
+    last_days INTEGER AS Int NOT NULL ,
+    tags TEXT AS List<Int>,
     enable Integer AS Boolean  NOT NULL DEFAULT 1
 );
 
 insertGoal:
-INSERT  INTO  GoalEntity ( parent_id, name, created_at, flag_del, enable) VALUES (?, ?, ?, ?, ?);
+INSERT  INTO  GoalEntity (id, name, created_at,last_days, tags, enable) VALUES ?;
 
 selectAll:
 SELECT * FROM GoalEntity;
 
-selectAvaible:
-SELECT * FROM GoalEntity WHERE flag_del = 0;
-
 update:
-INSERT INTO GoalEntity (id, parent_id, name, created_at, flag_del, enable) VALUES (?, ?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO GoalEntity (id, name, created_at,last_days, tags, enable) VALUES ?;
 
+deleteById:
+DELETE FROM GoalEntity WHERE id = ?;
 
 
 
