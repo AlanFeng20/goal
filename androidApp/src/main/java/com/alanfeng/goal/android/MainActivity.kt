@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.navigator.Navigator
 import com.alanfeng.goal.android.ui.BottomBar
+import com.alanfeng.goal.android.ui.screens.HomeScreen
 import com.alanfeng.goal.android.ui.theme.GoalTheme
 
 
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BottomBar()
+                    Navigator(screen = HomeScreen())
                 }
             }
         }

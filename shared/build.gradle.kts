@@ -33,6 +33,8 @@ kotlin {
         val sqlDelightVersion = "1.5.4"
         val dateTimeVersion = "0.4.0"
         val okioVersion = "3.2.0"
+        val koinVersion="3.3.0"
+        val yoyagerVersion="1.0.0-rc03"
         val commonMain by getting{
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             dependencies{
@@ -49,6 +51,9 @@ kotlin {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.ctrip.flight.mmkv:mmkv-kotlin:1.2.4")
 
+                // Koin Core features
+                api("io.insert-koin:koin-core:$koinVersion")
+
 
                 api(compose.runtime)
                 api(compose.foundation)
@@ -60,17 +65,23 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("io.insert-koin:koin-test:$koinVersion")
                 implementation("com.squareup.okio:okio-fakefilesystem:$okioVersion")
             }
         }
         val androidMain by getting{
             dependencies{
+                val koin_android_version= "3.3.1"
+                api("io.insert-koin:koin-android:$koin_android_version")
+                // Navigator
+                api("cafe.adriel.voyager:voyager-navigator:$yoyagerVersion")
+                // Transitions
+                api("cafe.adriel.voyager:voyager-transitions:$yoyagerVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
-
             }
         }
-        val androidTest by getting
+//        val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
