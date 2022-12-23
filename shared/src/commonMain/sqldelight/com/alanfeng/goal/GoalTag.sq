@@ -1,0 +1,19 @@
+CREATE TABLE GoalTagEntity (
+    id Integer  PRIMARY KEY AUTOINCREMENT ,
+    goal_id INTEGER NOT NULL,
+    name Text NOT NULL ,
+    FOREIGN KEY (goal_id) REFERENCES GoalEntity(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+insertGoalTag:
+INSERT OR IGNORE INTO GoalTagEntity (goal_id, name) VALUES (?,?);
+
+selectNameByGoalId:
+SELECT name FROM GoalTagEntity WHERE goal_id = ?;
+
+selectNames:
+SELECT name FROM GoalTagEntity;
+
+deleteByGoalId:
+DELETE FROM GoalTagEntity WHERE goal_id = ?;
+

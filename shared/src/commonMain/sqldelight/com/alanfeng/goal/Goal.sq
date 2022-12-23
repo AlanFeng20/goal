@@ -4,18 +4,17 @@ CREATE TABLE GoalEntity (
     name Text  NOT NULL ,
     created_at Integer AS Long NOT NULL,
     last_days INTEGER AS Int NOT NULL ,
-    tags TEXT AS List<Int>,
     enable Integer AS Boolean  NOT NULL DEFAULT 1
 );
 
 insertGoal:
-INSERT  INTO  GoalEntity (id, name, created_at,last_days, tags, enable) VALUES ?;
+INSERT  INTO  GoalEntity (id, name, created_at,last_days, enable) VALUES ?;
 
 selectAll:
 SELECT * FROM GoalEntity;
 
 update:
-INSERT OR REPLACE INTO GoalEntity (id, name, created_at,last_days, tags, enable) VALUES ?;
+INSERT OR REPLACE INTO GoalEntity (id, name, created_at,last_days, enable) VALUES ?;
 
 deleteById:
 DELETE FROM GoalEntity WHERE id = ?;

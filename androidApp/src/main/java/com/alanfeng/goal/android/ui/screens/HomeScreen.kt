@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.screen.Screen
+import com.alanfeng.goal.AndroidPlatform
 import com.alanfeng.goal.android.ui.BottomBar
 import com.alanfeng.goal.uistate.HomeVM
 import org.koin.core.component.KoinComponent

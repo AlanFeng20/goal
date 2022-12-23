@@ -25,7 +25,7 @@ import com.alanfeng.goal.uistate.BottomItem
 import com.alanfeng.goal.uistate.bottoms
 
 @Composable
-fun BottomBar(selected:BottomItem,onSelect:(BottomItem)->Unit) {
+fun BottomBar(selected: com.alanfeng.goal.uistate.BottomItem, onSelect:(com.alanfeng.goal.uistate.BottomItem)->Unit) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -39,7 +39,7 @@ fun BottomBar(selected:BottomItem,onSelect:(BottomItem)->Unit) {
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
         ) {
-            bottoms.forEach {
+            com.alanfeng.goal.uistate.bottoms.forEach {
                 IconButton(modifier = Modifier.weight(1f),
                     onClick = { onSelect(it) }
                 ) {

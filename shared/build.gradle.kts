@@ -1,30 +1,37 @@
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
+//    kotlin("native.cocoapods")
     id("com.android.library")
+
     id("org.jetbrains.compose")
-
-
-    kotlin("plugin.serialization") version "1.7.21"
+//
+    kotlin("plugin.serialization")
     id("com.squareup.sqldelight")
 }
 
 kotlin {
     android()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
 
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "14.1"
-        podfile = project.file("../iosApp/Podfile")
-        framework {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
             baseName = "shared"
         }
     }
+
+//    cocoapods {
+//        summary = "Some description for the Shared Module"
+//        homepage = "Link to the Shared Module homepage"
+//        version = "1.0"
+//        ios.deploymentTarget = "14.1"
+//        podfile = project.file("../iosApp/Podfile")
+//        framework {
+//            baseName = "shared"
+//        }
+//    }
     
     sourceSets {
 
@@ -35,6 +42,7 @@ kotlin {
         val okioVersion = "3.2.0"
         val koinVersion="3.3.0"
         val yoyagerVersion="1.0.0-rc03"
+
         val commonMain by getting{
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             dependencies{

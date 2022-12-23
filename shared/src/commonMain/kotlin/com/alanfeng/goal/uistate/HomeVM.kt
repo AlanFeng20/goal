@@ -1,12 +1,12 @@
 package com.alanfeng.goal.uistate
 
+import com.alanfeng.goal.base.AccessStateFlow
+import com.alanfeng.goal.base.ViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 
 
@@ -19,12 +19,11 @@ val bottoms = listOf(
 )
 
 
-class HomeVM:KoinComponent{
-    private val _selected = MutableStateFlow(bottoms[0])
-    val selected = _selected.asStateFlow()
+class HomeVM: ViewModel(),KoinComponent{
+    val selected = AccessStateFlow(bottoms[0])
 
     fun setCur(item: BottomItem) {
-        _selected.value = item
+        selected.value = item
     }
 
 }
