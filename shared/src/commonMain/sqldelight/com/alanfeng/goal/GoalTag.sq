@@ -11,6 +11,9 @@ INSERT OR IGNORE INTO GoalTagEntity (goal_id, name) VALUES (?,?);
 selectNameByGoalId:
 SELECT name FROM GoalTagEntity WHERE goal_id = ?;
 
+selectNamesWithCount:
+SELECT name,count(name) FROM GoalTagEntity GROUP BY name;
+
 selectNames:
 SELECT name FROM GoalTagEntity;
 

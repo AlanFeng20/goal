@@ -1,8 +1,8 @@
 package com.alanfeng.goal.rep
 
-import com.alanfeng.goal.TaskEntity
 import com.alanfeng.goal.database
 import com.alanfeng.goal.dispatcherIO
+import com.alanfeng.goal.model.Task
 import kotlinx.coroutines.withContext
 
 object TaskRep {
@@ -12,19 +12,19 @@ object TaskRep {
         }
     }
 
-    suspend fun insert(task: TaskEntity) = withContext(dispatcherIO) {
+    suspend fun insert(task: Task) = withContext(dispatcherIO) {
         database.transaction {
             database.taskQueries.insertTask(task)
         }
     }
 
-    suspend fun del(task: TaskEntity) = withContext(dispatcherIO) {
+    suspend fun del(task: Task) = withContext(dispatcherIO) {
         database.transaction {
             database.taskQueries.deleteById(task.id)
         }
     }
 
-    suspend fun update(task: TaskEntity) = withContext(dispatcherIO) {
+    suspend fun update(task: Task) = withContext(dispatcherIO) {
         database.transaction {
             database.taskQueries.update(task)
         }

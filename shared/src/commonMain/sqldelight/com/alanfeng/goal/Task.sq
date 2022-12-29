@@ -1,24 +1,26 @@
 import kotlin.collections.List;
 import kotlinx.datetime.DayOfWeek;
+import kotlinx.datetime.LocalTime;
 
 CREATE TABLE TaskEntity (
     id Integer  PRIMARY KEY AUTOINCREMENT,
     goal_id INTEGER NOT NULL ,
     name Text  NOT NULL ,
     remind_way TEXT,
-    remind_hour INTEGER NOT NULL ,
-    remind_minutes INTEGER NOT NULL ,
-    remind_weeks TEXT AS List<DayOfWeek> NOT NULL ,
+    card_time TEXT AS LocalTime NOT NULL ,
+    card_weeks TEXT AS List<DayOfWeek> NOT NULL ,
     created_at Integer AS Long NOT NULL,
+    end_at Integer  NOT NULL,
     enable Integer AS Boolean  NOT NULL DEFAULT 1,
     finish_mark TEXT DEFAULT NULL ,
+    finished_at Integer  DEFAULT NULL ,
     FOREIGN KEY (goal_id) REFERENCES GoalEntity(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 insertTask:
-INSERT INTO TaskEntity ( goal_id, name, remind_way,remind_hour,remind_minutes,remind_weeks, created_at, enable, finish_mark) VALUES ?;
+INSERT INTO TaskEntity ( goal_id, name, remind_way,card_time,card_weeks, created_at,end_at, enable, finish_mark) VALUES ?;
 
 update:
-INSERT OR REPLACE INTO TaskEntity ( goal_id, name, remind_way,remind_hour,remind_minutes,remind_weeks, created_at, enable, finish_mark) VALUES ?;
+INSERT OR REPLACE INTO TaskEntity ( goal_id, name, remind_way,card_time,card_weeks, end_at,created_at, enable, finish_mark) VALUES ?;
 
 deleteById:
 DELETE FROM TaskEntity WHERE id = ?;

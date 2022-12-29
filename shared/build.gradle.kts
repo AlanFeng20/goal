@@ -125,8 +125,6 @@ android {
     }
 }
 
-
-
 sqldelight {
     database("AppDatabase") {
         packageName = "com.alanfeng.goal"

@@ -1,20 +1,20 @@
-import kotlin.collections.List;
 CREATE TABLE GoalEntity (
     id Integer  PRIMARY KEY AUTOINCREMENT ,
     name Text  NOT NULL ,
-    created_at Integer AS Long NOT NULL,
-    last_days INTEGER AS Int NOT NULL ,
+    created_at Integer  NOT NULL,
+    end_at INTEGER  NOT NULL ,
+    finished_at Integer  DEFAULT NULL,
     enable Integer AS Boolean  NOT NULL DEFAULT 1
 );
 
 insertGoal:
-INSERT  INTO  GoalEntity (id, name, created_at,last_days, enable) VALUES ?;
+INSERT  INTO  GoalEntity (id, name, created_at,end_at, enable) VALUES ?;
 
 selectAll:
 SELECT * FROM GoalEntity;
 
 update:
-INSERT OR REPLACE INTO GoalEntity (id, name, created_at,last_days, enable) VALUES ?;
+INSERT OR REPLACE INTO GoalEntity (id, name, created_at,end_at,finished_at, enable) VALUES ?;
 
 deleteById:
 DELETE FROM GoalEntity WHERE id = ?;

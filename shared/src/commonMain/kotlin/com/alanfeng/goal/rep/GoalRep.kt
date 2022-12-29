@@ -17,7 +17,8 @@ object GoalRep {
                     created_at = it.created_at,
                     enable = it.enable,
                     id = it.id,
-                    last_days = it.last_days
+                    end_at = it.end_at,
+                    finished_at = it.finished_at
                 )
             }
         }
@@ -41,11 +42,15 @@ object GoalRep {
     suspend fun update(goal: Goal) = withContext(dispatcherIO) {
         database.transaction {
             database.goalQueries.update(goal.toGoalEntity())
+            database.goalTagQueries.deleteByGoalId(goal_id = goal.id)
             goal.tags.forEach {
-                database.goalTagQueries.deleteByGoalId(goal_id = goal.id)
                 database.goalTagQueries.insertGoalTag(goal_id = goal.id, name = it)
             }
         }
+    }
+
+    suspend fun goalProgress(goalId: Long) = withContext(dispatcherIO) {
+
     }
 }
 
@@ -53,6 +58,7 @@ private fun Goal.toGoalEntity(): GoalEntity = GoalEntity(
     id = id,
     name = name,
     created_at = created_at,
-    last_days = last_days,
-    enable = enable
+    end_at = end_at,
+    enable = enable,
+    finished_at = finished_at
 )

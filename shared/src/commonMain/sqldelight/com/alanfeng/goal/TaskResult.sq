@@ -4,7 +4,7 @@ CREATE TABLE TaskResultEntity (
     is_success INTEGER  NOT NULL,
     emotion_percent INTEGER NOT NULL DEFAULT 0,
     mark Text,
-    created_at Integer NOT NULL,
+    created_at Integer  NOT NULL,
     FOREIGN KEY (task_id) REFERENCES TaskEntity(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 insertTaskResultEntity:
