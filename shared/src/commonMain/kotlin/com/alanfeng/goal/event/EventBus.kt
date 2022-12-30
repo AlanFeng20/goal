@@ -1,7 +1,8 @@
-package com.alanfeng.goal.base
+package com.alanfeng.goal.event
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ object EventBus {
     }
     
     
-    suspend fun send(event: Any,sticky:Boolean=false) {
+    fun send(event: Any,sticky:Boolean=false) {
         if(sticky){
             stickyList.add(event)
             val callback= observerMap[event]
@@ -29,7 +30,9 @@ object EventBus {
                 it.invoke(event)
             }
         }else{
-            eventFlow.emit(event)
+            GlobalScope.launch {
+                eventFlow.emit(event)
+            }
         }
     }
 

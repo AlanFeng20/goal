@@ -4,7 +4,7 @@ import com.alanfeng.goal.GoalEntity
 import com.alanfeng.goal.database
 import com.alanfeng.goal.dispatcherIO
 import com.alanfeng.goal.model.Goal
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 object GoalRep {
     suspend fun listGoals(): List<Goal> = withContext(dispatcherIO) {
@@ -49,8 +49,12 @@ object GoalRep {
         }
     }
 
-    suspend fun goalProgress(goalId: Long) = withContext(dispatcherIO) {
-
+    suspend fun goalTaskResultCount(goalId: Long): Long = withContext(dispatcherIO) {
+        database.transactionWithResult {
+            database.taskQueries.selectAllByGoalId(goalId).executeAsList().sumOf {
+                database.taskResultQueries.countByTaskId(it.id).executeAsOne()
+            }
+        }
     }
 }
 

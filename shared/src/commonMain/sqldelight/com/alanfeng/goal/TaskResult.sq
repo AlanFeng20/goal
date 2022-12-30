@@ -13,6 +13,9 @@ INSERT INTO TaskResultEntity (id, task_id, is_success, emotion_percent, mark, cr
 selectByTaskId:
 SELECT * FROM TaskResultEntity WHERE task_id = ? ORDER BY created_at DESC ;
 
+countByTaskId:
+SELECT count(*) FROM TaskResultEntity WHERE task_id = ?;
+
 selectAll:
 SELECT * FROM TaskResultEntity ORDER BY created_at DESC ;
 

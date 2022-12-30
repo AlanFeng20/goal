@@ -42,6 +42,7 @@ kotlin {
         val okioVersion = "3.2.0"
         val koinVersion="3.3.0"
         val yoyagerVersion="1.0.0-rc03"
+        val napierVersion = "2.6.1"
 
         val commonMain by getting{
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
@@ -62,12 +63,10 @@ kotlin {
                 // Koin Core features
                 api("io.insert-koin:koin-core:$koinVersion")
 
-
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
 
-//                implementation(libs.napier)
             }
         }
         val commonTest by getting {
