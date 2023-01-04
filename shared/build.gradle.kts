@@ -42,11 +42,11 @@ kotlin {
         val okioVersion = "3.2.0"
         val koinVersion="3.3.0"
         val yoyagerVersion="1.0.0-rc03"
-        val napierVersion = "2.6.1"
 
         val commonMain by getting{
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             dependencies{
+                api(project(":composeBasicUI"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
@@ -66,7 +66,6 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
-
             }
         }
         val commonTest by getting {

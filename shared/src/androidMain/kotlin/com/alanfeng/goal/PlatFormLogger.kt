@@ -14,7 +14,7 @@ import kotlin.math.min
  **/
 actual class PlatFormLogger {
     actual fun log(
-        priority: LogLevel,
+        priority: XLogLevel,
         tag: String?,
         throwable: Throwable?,
         message: String?
@@ -32,7 +32,7 @@ actual class PlatFormLogger {
         val length = fullMessage.length
         if (length <= MAX_LOG_LENGTH) {
             // Fast path for small messages which can fit in a single call.
-            if (priority == LogLevel.ASSERT) {
+            if (priority == XLogLevel.ASSERT) {
                 Log.wtf(debugTag, fullMessage)
             } else {
                 Log.println(priority.toValue(), debugTag, fullMessage)
@@ -93,13 +93,13 @@ actual class PlatFormLogger {
             tag
         } else tag.substring(0, MAX_TAG_LENGTH)
     }
-    private fun LogLevel.toValue() = when (this) {
-        LogLevel.VERBOSE -> Log.VERBOSE
-        LogLevel.DEBUG -> Log.DEBUG
-        LogLevel.INFO -> Log.INFO
-        LogLevel.WARNING -> Log.WARN
-        LogLevel.ERROR -> Log.ERROR
-        LogLevel.ASSERT -> Log.ASSERT
+    private fun XLogLevel.toValue() = when (this) {
+        XLogLevel.VERBOSE -> Log.VERBOSE
+        XLogLevel.DEBUG -> Log.DEBUG
+        XLogLevel.INFO -> Log.INFO
+        XLogLevel.WARNING -> Log.WARN
+        XLogLevel.ERROR -> Log.ERROR
+        XLogLevel.ASSERT -> Log.ASSERT
     }
     companion object {
         private val anonymousClass = Pattern.compile("(\\$\\d+)+$")
