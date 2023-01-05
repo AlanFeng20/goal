@@ -1,47 +1,88 @@
 package com.alanfeng.composebasicui
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alanfeng.base.Logs
 import kotlinx.datetime.*
 import kotlin.math.abs
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePick() {
-    val now = remember { Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date }
-    var selected by remember {
-        mutableStateOf(now)
+fun DatePick(
+    initDate: LocalDate = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date,
+    preventDate: ((LocalDate) -> Boolean)? = { it.dayOfWeek== DayOfWeek.THURSDAY },
+) {
+    var selectedDate by remember {
+        mutableStateOf(initDate)
     }
+    val preventTextColor = Color.Gray
+    val focusColor = MaterialTheme.colorScheme.tertiary
+    val focusTextColor = MaterialTheme.colorScheme.onTertiary
+    val selectTextColor = MaterialTheme.colorScheme.onSecondary
+    val selectBgColor = MaterialTheme.colorScheme.secondary
+    val unSelectTextColor = MaterialTheme.colorScheme.onPrimaryContainer
+
     Card {
         CalendarPanel(
-            now.year, now.monthNumber, DayOfWeek.SUNDAY
-        ) { modifier, localDate ->
-            Logs.e { "CalendarPanel item" }
-            Text(
-                text = localDate.dayOfMonth.toString(),
-                modifier = modifier.clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    selected = localDate
-                }.padding(vertical = 8.dp),
-                color = if (selected == localDate) Color.Blue else Color.Unspecified,
-                textAlign = TextAlign.Center
-            )
+            initDate.year, initDate.monthNumber, DayOfWeek.FRIDAY
+        ) { localDate ->
+            Logs.e { "重组子项" }
+            val prevented = preventDate?.invoke(localDate) ?: false
+            val selected = selectedDate == localDate
+            val interactionSource = remember { MutableInteractionSource() }
+            val pressed by interactionSource.collectIsPressedAsState()
+
+            val focusChangeColor by animateColorAsState(if(pressed) focusColor else Color.Transparent )
+            Box(
+                Modifier.height(maxWidth).let {
+                    if (!prevented) {
+                        it.clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) { selectedDate = localDate }
+                    } else it
+                }
+            ) {
+                Canvas(Modifier.fillMaxSize()) {
+                    if (selected) {
+                        drawCircle(selectBgColor)
+                    } else if (pressed) {
+                        drawCircle(focusChangeColor)
+                    }
+                }
+                val textColor = when {
+                    prevented -> preventTextColor
+                    selected -> selectTextColor
+                    pressed -> focusTextColor
+                    else -> unSelectTextColor
+                }
+                Text(
+                    text = localDate.dayOfMonth.toString(),
+                    modifier = Modifier.align(Alignment.Center),
+                    color = textColor,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
+
 
 @Composable
 fun CalendarPanel(
@@ -49,7 +90,7 @@ fun CalendarPanel(
     month: Int,
     weekStart: DayOfWeek,
     weekDisplay: @Composable ((DayOfWeek) -> Unit)? = null,
-    item: @Composable (Modifier, LocalDate) -> Unit
+    item: @Composable BoxWithConstraintsScope.(LocalDate) -> Unit
 ) {
     val ofWeeks = remember(weekStart) {
         weekStart.listFromThis()
@@ -62,7 +103,7 @@ fun CalendarPanel(
                 }
             }
         }
-        Column(Modifier.height(IntrinsicSize.Min)) {
+        Column() {
             val firstDay = LocalDate(year, month, 1)
             val days = firstDay.daysUntil(firstDay.plus(1, DateTimeUnit.MONTH))
             val aWeek = mutableListOf<LocalDate?>()
@@ -89,11 +130,13 @@ fun CalendarPanel(
                         }
                         aWeek.forEach { date ->
                             if (date != null) {
-                                item(itemModifier, date)
+                                BoxWithConstraints(itemModifier) {
+                                    item(date)
+                                }
                             }
                         }
                         val lastMinus = 7 - aWeek.size
-                        if (lastMinus > 0 && day == days - 1) {
+                        if (day == days - 1 && lastMinus > 0) {
                             Box(Modifier.weight(lastMinus.toFloat()))
                         }
                     }
@@ -102,6 +145,7 @@ fun CalendarPanel(
                     aWeek.clear()
                 }
                 curDay = curDay.plus(DateTimeUnit.DAY)
+                Logs.e { "遍历天数" }
             }
         }
     }

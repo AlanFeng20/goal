@@ -48,7 +48,7 @@ kotlin {
             dependencies{
                 api(project(":base"))
                 api(project(":composeBasicUI"))
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
