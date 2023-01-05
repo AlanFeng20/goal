@@ -1,7 +1,7 @@
 package com.alanfeng.goal.uistate
 
-import com.alanfeng.goal.base.AccessStateFlow
-import com.alanfeng.goal.base.ViewModel
+import com.alanfeng.base.AccessStateFlow
+import com.alanfeng.base.ViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home

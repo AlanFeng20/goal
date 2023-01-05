@@ -3,6 +3,7 @@ package com.alanfeng.goal
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.alanfeng.base.Logs
 import com.alanfeng.goal.android.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -17,6 +18,7 @@ class App:Application() {
         context =applicationContext
 
         initKoin()
+        Logs.init(BuildConfig.DEBUG)
     }
 
     private fun initKoin() {

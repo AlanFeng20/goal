@@ -13,20 +13,17 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "composeBasicUI"
+            baseName = "base"
         }
     }
 
     sourceSets {
-        val commonMain by getting {
-            val dateTimeVersion = "0.4.0"
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+        val commonMain by getting{
+
+            val coroutinesVersion = "1.6.4"
             dependencies{
-                implementation(project(":base"))
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
                 implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {
@@ -58,7 +55,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.alanfeng.composebasicui"
+    namespace = "com.alanfeng.base"
     compileSdk = 32
     defaultConfig {
         minSdk = 24

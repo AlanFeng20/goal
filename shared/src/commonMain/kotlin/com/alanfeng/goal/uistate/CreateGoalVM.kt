@@ -1,7 +1,7 @@
 package com.alanfeng.goal.uistate
 
-import com.alanfeng.goal.base.AccessStateFlow
-import com.alanfeng.goal.base.ViewModel
+import com.alanfeng.base.AccessStateFlow
+import com.alanfeng.base.ViewModel
 import kotlinx.datetime.*
 import org.koin.core.component.KoinComponent
 

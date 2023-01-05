@@ -1,7 +1,7 @@
 package com.alanfeng.goal.rep
 
 import com.alanfeng.goal.database
-import com.alanfeng.goal.dispatcherIO
+import com.alanfeng.base.dispatcherIO
 import com.alanfeng.goal.model.Task
 import kotlinx.coroutines.withContext
 

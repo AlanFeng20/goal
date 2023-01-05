@@ -1,4 +1,4 @@
-package com.alanfeng.goal
+package com.alanfeng.base
 
 import android.util.Log
 import java.io.PrintWriter
@@ -14,7 +14,7 @@ import kotlin.math.min
  **/
 actual class PlatFormLogger {
     actual fun log(
-        priority: XLogLevel,
+        priority: LogsLevel,
         tag: String?,
         throwable: Throwable?,
         message: String?
@@ -32,7 +32,7 @@ actual class PlatFormLogger {
         val length = fullMessage.length
         if (length <= MAX_LOG_LENGTH) {
             // Fast path for small messages which can fit in a single call.
-            if (priority == XLogLevel.ASSERT) {
+            if (priority == LogsLevel.ASSERT) {
                 Log.wtf(debugTag, fullMessage)
             } else {
                 Log.println(priority.toValue(), debugTag, fullMessage)
@@ -93,13 +93,13 @@ actual class PlatFormLogger {
             tag
         } else tag.substring(0, MAX_TAG_LENGTH)
     }
-    private fun XLogLevel.toValue() = when (this) {
-        XLogLevel.VERBOSE -> Log.VERBOSE
-        XLogLevel.DEBUG -> Log.DEBUG
-        XLogLevel.INFO -> Log.INFO
-        XLogLevel.WARNING -> Log.WARN
-        XLogLevel.ERROR -> Log.ERROR
-        XLogLevel.ASSERT -> Log.ASSERT
+    private fun LogsLevel.toValue() = when (this) {
+        LogsLevel.VERBOSE -> Log.VERBOSE
+        LogsLevel.DEBUG -> Log.DEBUG
+        LogsLevel.INFO -> Log.INFO
+        LogsLevel.WARNING -> Log.WARN
+        LogsLevel.ERROR -> Log.ERROR
+        LogsLevel.ASSERT -> Log.ASSERT
     }
     companion object {
         private val anonymousClass = Pattern.compile("(\\$\\d+)+$")

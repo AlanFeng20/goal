@@ -2,7 +2,7 @@ package com.alanfeng.goal.rep
 
 import com.alanfeng.goal.GoalEntity
 import com.alanfeng.goal.database
-import com.alanfeng.goal.dispatcherIO
+import com.alanfeng.base.dispatcherIO
 import com.alanfeng.goal.model.Goal
 import kotlinx.coroutines.*
 

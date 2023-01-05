@@ -46,6 +46,7 @@ kotlin {
         val commonMain by getting{
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             dependencies{
+                api(project(":base"))
                 api(project(":composeBasicUI"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")

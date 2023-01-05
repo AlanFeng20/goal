@@ -1,4 +1,4 @@
-package com.alanfeng.goal
+package com.alanfeng.base
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

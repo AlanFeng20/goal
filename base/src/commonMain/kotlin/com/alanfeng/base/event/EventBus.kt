@@ -1,4 +1,4 @@
-package com.alanfeng.goal.event
+package com.alanfeng.base.event
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

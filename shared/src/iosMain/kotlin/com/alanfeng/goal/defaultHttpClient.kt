@@ -21,8 +21,8 @@ actual fun defaultHttpClient(): HttpClient= HttpClient(Darwin){
 
     install(HttpCache)
     install(Logging) {
-        logger = XLog.DEFAULT
-        level = XLogLevel.HEADERS
+        logger = Logs.DEFAULT
+        level = LogsLevel.HEADERS
         filter { request ->
             request.url.host.contains("ktor.io")
         }

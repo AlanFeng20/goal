@@ -1,14 +1,13 @@
-package com.alanfeng.goal.base
+package com.alanfeng.base
 
-import com.alanfeng.goal.XLog
-import com.alanfeng.goal.event.EventBus
-import com.alanfeng.goal.event.events.CoroutineErrorEvent
+import com.alanfeng.base.event.EventBus
+import com.alanfeng.base.event.events.CoroutineErrorEvent
 import kotlinx.coroutines.*
 
 open class ViewModel {
     val scope = MainScope() + CoroutineExceptionHandler { _, throwable ->
         EventBus.send(CoroutineErrorEvent(throwable))
-        XLog.e("ViewModel coroutine", throwable)
+        Logs.e("ViewModel coroutine", throwable)
     }
 
     var <T> AccessStateFlow<T>.value

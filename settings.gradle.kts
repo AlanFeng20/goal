@@ -27,3 +27,4 @@ rootProject.name = "goal"
 include(":androidApp")
 include(":shared")
 include(":composeBasicUI")
+include(":base")

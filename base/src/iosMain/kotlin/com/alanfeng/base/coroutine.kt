@@ -1,8 +1,6 @@
-package com.alanfeng.goal
+package com.alanfeng.base
 
-import io.ktor.client.utils.*
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newFixedThreadPoolContext
 
 actual val dispatcherIO: CoroutineDispatcher = newFixedThreadPoolContext(30, "ios")

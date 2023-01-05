@@ -1,3 +1,3 @@
-package com.alanfeng.goal.event.events
+package com.alanfeng.base.event.events
 
 data class CoroutineErrorEvent(val throwable: Throwable)

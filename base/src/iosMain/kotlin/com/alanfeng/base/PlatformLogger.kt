@@ -1,4 +1,4 @@
-package com.alanfeng.goal
+package com.alanfeng.base
 
 /**
  *
@@ -24,29 +24,29 @@ actual class PlatFormLogger{
         dateFormat = "MM-dd HH:mm:ss.SSS"
     }
 
-    private val tagMap: HashMap<XLogLevel, String> = hashMapOf(
-        XLogLevel.VERBOSE to "💜 VERBOSE",
-        XLogLevel.DEBUG to "💚 DEBUG",
-        XLogLevel.INFO to "💙 INFO",
-        XLogLevel.WARNING to "💛 WARN",
-        XLogLevel.ERROR to "❤️ ERROR",
-        XLogLevel.ASSERT to "💞 ASSERT"
+    private val tagMap: HashMap<LogsLevel, String> = hashMapOf(
+        LogsLevel.VERBOSE to "💜 VERBOSE",
+        LogsLevel.DEBUG to "💚 DEBUG",
+        LogsLevel.INFO to "💙 INFO",
+        LogsLevel.WARNING to "💛 WARN",
+        LogsLevel.ERROR to "❤️ ERROR",
+        LogsLevel.ASSERT to "💞 ASSERT"
     )
 
     actual fun log(
-        priority: XLogLevel,
+        priority: LogsLevel,
         tag: String?,
         throwable: Throwable?,
         message: String?,
     ) {
-        if (priority == XLogLevel.ASSERT) {
+        if (priority == LogsLevel.ASSERT) {
             assert(crashAssert) { buildLog(priority, tag, throwable, message) }
         } else {
             println(buildLog(priority, tag, throwable, message))
         }
     }
 
-    fun setTag(level: XLogLevel, tag: String) {
+    fun setTag(level: LogsLevel, tag: String) {
         tagMap[level] = tag
     }
 
@@ -56,7 +56,7 @@ actual class PlatFormLogger{
 
     private fun getCurrentTime() = dateFormatter.stringFromDate(NSDate())
 
-    private fun buildLog(priority: XLogLevel, tag: String?, throwable: Throwable?, message: String?): String {
+    private fun buildLog(priority: LogsLevel, tag: String?, throwable: Throwable?, message: String?): String {
         val baseLogString = "${getCurrentTime()} ${tagMap[priority]} ${tag ?: performTag(defaultTag)} - $message"
         return if (throwable != null) {
             "$baseLogString\n${throwable.stackTraceToString()}"

@@ -1,4 +1,4 @@
-package com.alanfeng.goal.base
+package com.alanfeng.base
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
