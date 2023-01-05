@@ -8,6 +8,7 @@ import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.serialization.kotlinx.json.*
 import okhttp3.Protocol
 
@@ -22,7 +23,7 @@ actual fun defaultHttpClient(): HttpClient= HttpClient(OkHttp){
 
     install(HttpCache)
     install(Logging) {
-        logger = Logger.DEFAULT
+        logger = io.ktor.client.plugins.logging.Logger.DEFAULT
         level = LogLevel.HEADERS
         filter { request ->
             request.url.host.contains("ktor.io")

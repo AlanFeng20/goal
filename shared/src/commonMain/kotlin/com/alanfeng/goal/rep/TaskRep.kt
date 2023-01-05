@@ -18,9 +18,9 @@ object TaskRep {
         }
     }
 
-    suspend fun del(task: Task) = withContext(dispatcherIO) {
+    suspend fun del(taskId: Long) = withContext(dispatcherIO) {
         database.transaction {
-            database.taskQueries.deleteById(task.id)
+            database.taskQueries.deleteById(taskId)
         }
     }
 

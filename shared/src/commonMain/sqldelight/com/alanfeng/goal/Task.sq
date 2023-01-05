@@ -17,10 +17,13 @@ CREATE TABLE TaskEntity (
     FOREIGN KEY (goal_id) REFERENCES GoalEntity(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 insertTask:
-INSERT INTO TaskEntity ( goal_id, name, remind_way,card_time,card_weeks, created_at,end_at, enable, finish_mark) VALUES ?;
+INSERT INTO TaskEntity ( goal_id, name, remind_way,card_time,card_weeks, created_at,end_at, enable) VALUES ?;
 
 update:
-INSERT OR REPLACE INTO TaskEntity ( goal_id, name, remind_way,card_time,card_weeks, end_at,created_at, enable, finish_mark) VALUES ?;
+INSERT OR REPLACE INTO TaskEntity ( goal_id, name, remind_way,card_time,card_weeks, end_at,created_at, enable) VALUES ?;
+
+finish:
+UPDATE TaskEntity SET finished_at = finished_at,finish_mark=finish_mark WHERE id = ?;
 
 deleteById:
 DELETE FROM TaskEntity WHERE id = ?;

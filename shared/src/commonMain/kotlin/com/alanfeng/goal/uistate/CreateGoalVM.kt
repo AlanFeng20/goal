@@ -7,11 +7,11 @@ import org.koin.core.component.KoinComponent
 
 
 class CreateGoalVM : ViewModel(), KoinComponent {
-    var name = ""
-        set(value) {
-            field = value
-            updateSug()
-        }
+    private var name = ""
+    fun setName(v: String) {
+        name = v.trim()
+        updateSug()
+    }
 
     private val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
 

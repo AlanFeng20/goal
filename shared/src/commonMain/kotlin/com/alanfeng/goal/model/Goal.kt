@@ -1,6 +1,8 @@
 package com.alanfeng.goal.model
 
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toDateTimePeriod
 
 data class Goal(
     var name: String,
@@ -10,4 +12,10 @@ data class Goal(
     var enable: Boolean,
     val finished_at: Long?,
     val id: Long = 0,
-)
+) {
+    val lastDays
+        get() = (Instant.fromEpochMilliseconds(end_at) - Instant.fromEpochMilliseconds(created_at)).toDateTimePeriod().days
+
+    val isOverEnd
+        get() = Clock.System.now().toEpochMilliseconds() > end_at
+}
