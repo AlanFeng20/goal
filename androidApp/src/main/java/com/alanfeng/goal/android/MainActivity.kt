@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 //                    Navigator(screen = HomeScreen())
-                    DatePick()
+                    DatePick(onCancel = {}, onChoose = {})
                 }
             }
         }
