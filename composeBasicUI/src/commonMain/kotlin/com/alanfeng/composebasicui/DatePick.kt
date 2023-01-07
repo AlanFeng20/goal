@@ -1,9 +1,11 @@
 package com.alanfeng.composebasicui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import com.alanfeng.base.Logs
 import kotlinx.datetime.*
@@ -24,6 +27,9 @@ import kotlin.math.abs
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePick(
+    modifier: Modifier = Modifier.fillMaxWidth(0.75f)
+        .wrapContentHeight(),
+    title: String = "选择日期",
     initDate: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
     preventDate: ((LocalDate) -> Boolean)? = { it.dayOfWeek == DayOfWeek.THURSDAY },
     onChoose: (LocalDate) -> Unit,
@@ -39,53 +45,45 @@ fun DatePick(
     val unSelectTextColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     val yearRange = 1970..2500
-    Card {
-        Column {
-            Row {
-                WheelItem(selectedDate.year, yearRange,{it.toString()},true){
-                    selectedDate= LocalDate(it,selectedDate.monthNumber,selectedDate.dayOfMonth)
-                }
+    Card(
+        modifier
+    ) {
+        Column(Modifier.padding(vertical = 16.dp, horizontal = 8.dp)) {
+            Text(
+                title,
+                modifier = Modifier.padding(8.dp),
+                style = MaterialTheme.typography.headlineMedium
+            )
+            WheelItem(
+                Modifier.align(Alignment.End).padding(end = 8.dp),
+                selectedDate.year,
+                selectedDate.monthNumber,
+                yearRange,
+                { y, m -> "$y ${Month(m).name.substring(0, 3)}" }) { y, m ->
+                selectedDate = legalDate(y, m, selectedDate.dayOfMonth)
             }
             CalendarPanel(
-                selectedDate.year, selectedDate.monthNumber, DayOfWeek.FRIDAY
+                selectedDate.year, selectedDate.monthNumber,yearRange, DayOfWeek.SUNDAY
             ) { localDate ->
-                Logs.e { "重组子项" }
-                val prevented = preventDate?.invoke(localDate) ?: false
-                val selected = selectedDate == localDate
-                val interactionSource = remember { MutableInteractionSource() }
-                val pressed by interactionSource.collectIsPressedAsState()
-                val size = min(maxWidth, maxHeight)
-                val ripple = rememberRipple(false, size / 2)
-                val bgColor = if (selected) selectBgColor else Color.Transparent
-                Box(
-                    Modifier.align(Alignment.Center).width(size).height(size)
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = ripple,
-                            enabled = !prevented
-                        ) {
-                            selectedDate = localDate
-                        }.background(bgColor, CircleShape)
-                ) {
-                    val textColor = when {
-                        prevented -> preventTextColor
-                        selected -> selectTextColor
-                        pressed -> focusTextColor
-                        else -> unSelectTextColor
-                    }
-                    Text(
-                        text = localDate.dayOfMonth.toString(),
-                        modifier = Modifier.align(Alignment.Center),
-                        color = textColor,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                SimpleItem(
+                    preventDate?.invoke(localDate) ?: false,
+                    selectedDate == localDate,
+                    localDate,
+                    { selectedDate = it },
+                    selectBgColor,
+                    preventTextColor,
+                    selectTextColor,
+                    focusTextColor,
+                    unSelectTextColor
+                )
             }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+            Row(modifier = Modifier.align(Alignment.End)) {
                 TextButton(onClick = onCancel) {
                     Text("Cancel")
                 }
-                TextButton(onClick = { onChoose(selectedDate) }) {
+                TextButton(
+                    modifier = Modifier.padding(end = 32.dp, start = 16.dp),
+                    onClick = { onChoose(selectedDate) }) {
                     Text("OK")
                 }
             }
@@ -94,29 +92,94 @@ fun DatePick(
 }
 
 @Composable
-fun WheelItem(
-    cur: Int,
-    range: IntRange,
-    display: (Int) -> String,
-    loop: Boolean,
-    onChange: (Int) -> Unit
+private fun BoxWithConstraintsScope.SimpleItem(
+    prevented: Boolean,
+    selected: Boolean,
+    localDate: LocalDate,
+    onSelect: (LocalDate) -> Unit,
+    selectBgColor: Color,
+    preventTextColor: Color,
+    selectTextColor: Color,
+    focusTextColor: Color,
+    unSelectTextColor: Color
 ) {
-    if (cur !in range) {
-        throw IllegalArgumentException("cur outOf range:cur=$cur,range=$range")
+    Logs.e { "重组子项" }
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val size = min(maxWidth, maxHeight)
+    val ripple = rememberRipple(false, size / 2)
+    val bgColor = if (selected) selectBgColor else Color.Transparent
+    Box(
+        Modifier.align(Alignment.Center)
+            .width(size)
+            .height(size)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple,
+                enabled = !prevented
+            ) {
+                onSelect(localDate)
+            }.background(bgColor, CircleShape)
+    ) {
+        val textColor = when {
+            prevented -> preventTextColor
+            selected -> selectTextColor
+            pressed -> focusTextColor
+            else -> unSelectTextColor
+        }
+        Text(
+            text = localDate.dayOfMonth.toString(),
+            modifier = Modifier.align(Alignment.Center),
+            color = textColor,
+            textAlign = TextAlign.Center
+        )
     }
-    val startEnable = loop|| cur > range.first
-    val endEnable = loop|| cur > range.last
-    val size = range.size()
-    val pos = cur-range.first
-    Row(verticalAlignment = Alignment.CenterVertically) {
+}
+
+private fun legalDate(
+    y: Int,
+    m: Int,
+    day: Int
+): LocalDate = try {
+    LocalDate(y, m, day)
+} catch (e: Exception) {
+    if (y > 0 && m in 1..12 && day in 1..31) {
+        legalDate(y, m, day - 1)
+    } else {
+        throw e
+    }
+}
+
+@Composable
+fun WheelItem(
+    modifier: Modifier,
+    year: Int,
+    month: Int,
+    yearRange: IntRange,
+    display: (Int, Int) -> String,
+//    loop: Boolean,
+    onChange: (Int, Int) -> Unit
+) {
+    if (year !in yearRange) {
+        throw IllegalArgumentException("cur outOf range:cur=$year,range=$yearRange")
+    }
+    val startEnable = year > yearRange.first
+    val endEnable = year < yearRange.last
+    Row(modifier, verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = {
-            onChange((pos - 1 + size) % size+range.first)
+            val preMonth = month - 1
+            val m = if (preMonth > 0) preMonth else 12
+            val y = year - if (preMonth > 0) 0 else 1
+            onChange(y, m)
         }, enabled = startEnable) {
             Icon(Icons.Default.KeyboardArrowLeft, null)
         }
-        Text(text = display(cur))
+        Text(text = display(year, month), style = MaterialTheme.typography.titleLarge)
         IconButton(onClick = {
-            onChange((pos + 1 + size) % size+range.first)
+            val nextMonth = month + 1
+            val m = if (nextMonth > 12) 1 else nextMonth
+            val y = year + if (nextMonth > 12) 1 else 0
+            onChange(y, m)
         }, enabled = endEnable) {
             Icon(Icons.Default.KeyboardArrowRight, null)
         }
@@ -129,6 +192,7 @@ fun WheelItem(
 fun CalendarPanel(
     year: Int,
     month: Int,
+    yearRange: IntRange,
     weekStart: DayOfWeek,
     weekDisplay: @Composable ((DayOfWeek) -> Unit)? = null,
     item: @Composable BoxWithConstraintsScope.(LocalDate) -> Unit
@@ -144,49 +208,54 @@ fun CalendarPanel(
                 }
             }
         }
-        Column() {
-            val firstDay = LocalDate(year, month, 1)
-            val days = firstDay.daysUntil(firstDay.plus(1, DateTimeUnit.MONTH))
-            val aWeek = mutableListOf<LocalDate?>()
-            var newRow = false
-            var curDay = firstDay
-            var firstRow = true
-            val itemModifier = Modifier.weight(1f)
-            var minus = -1
-            repeat(days) { day ->
-                if (firstRow && minus < 0) {
-                    minus = abs(curDay.dayOfWeek.ordinal - weekStart.ordinal)
-                    repeat(minus) {
-                        aWeek.add(null)
-                    }
-                }
-                aWeek.add(curDay)
-                if (aWeek.size == 7 || day == days - 1) {
-                    newRow = true
-                }
-                if (newRow) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (firstRow && minus > 0) {
-                            Box(Modifier.weight(minus.toFloat()))
-                        }
-                        aWeek.forEach { date ->
-                            if (date != null) {
-                                BoxWithConstraints(itemModifier) {
-                                    item(date)
-                                }
+        androidx.compose.foundation.gestures.FlingBehavior
+        LazyRow (flingBehavior = ){
+            items(yearRange.size(),null,{null}){
+                Column(Modifier.fillParentMaxWidth().animateContentSize()) {
+                    val firstDay = LocalDate(year, month, 1)
+                    val days = firstDay.daysUntil(firstDay.plus(1, DateTimeUnit.MONTH))
+                    val aWeek = mutableListOf<LocalDate?>()
+                    var newRow = false
+                    var curDay = firstDay
+                    var firstRow = true
+                    val itemModifier = Modifier.weight(1f)
+                    var minus = -1
+                    repeat(days) { day ->
+                        if (firstRow && minus < 0) {
+                            minus = abs(curDay.dayOfWeek.ordinal - weekStart.ordinal)
+                            repeat(minus) {
+                                aWeek.add(null)
                             }
                         }
-                        val lastMinus = 7 - aWeek.size
-                        if (day == days - 1 && lastMinus > 0) {
-                            Box(Modifier.weight(lastMinus.toFloat()))
+                        aWeek.add(curDay)
+                        if (aWeek.size == 7 || day == days - 1) {
+                            newRow = true
                         }
+                        if (newRow) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                if (firstRow && minus > 0) {
+                                    Box(Modifier.weight(minus.toFloat()))
+                                }
+                                aWeek.forEach { date ->
+                                    if (date != null) {
+                                        BoxWithConstraints(itemModifier) {
+                                            item(date)
+                                        }
+                                    }
+                                }
+                                val lastMinus = 7 - aWeek.size
+                                if (day == days - 1 && lastMinus > 0) {
+                                    Box(Modifier.weight(lastMinus.toFloat()))
+                                }
+                            }
+                            newRow = false
+                            firstRow = false
+                            aWeek.clear()
+                        }
+                        curDay = curDay.plus(DateTimeUnit.DAY)
+                        Logs.e { "遍历天数" }
                     }
-                    newRow = false
-                    firstRow = false
-                    aWeek.clear()
                 }
-                curDay = curDay.plus(DateTimeUnit.DAY)
-                Logs.e { "遍历天数" }
             }
         }
     }
